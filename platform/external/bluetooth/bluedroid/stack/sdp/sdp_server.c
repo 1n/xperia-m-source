@@ -1,6 +1,7 @@
 /******************************************************************************
  *
  *  Copyright (C) 1999-2012 Broadcom Corporation
+ *  Copyright (C) 2013 Foxconn International Holdings, Ltd. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -399,8 +400,15 @@ static void process_service_attr_req (tCONN_CB *p_ccb, UINT16 trans_num,
             return;
         }
         /* Get a scratch buffer to store response */
-        if (!p_ccb->rsp_list)
+        //if (!p_ccb->rsp_list)
+        if (!p_ccb->rsp_list || (GKI_get_buf_size(p_ccb->rsp_list) < max_list_len))
         {
+            /* Free and reallocate if the earlier allocated buffer is small */
+            if (p_ccb->rsp_list)
+            {
+                GKI_freebuf (p_ccb->rsp_list);
+            }
+
             p_ccb->rsp_list = (UINT8 *)GKI_getbuf (max_list_len);
             if (p_ccb->rsp_list == NULL)
             {
@@ -651,8 +659,15 @@ static void process_service_search_attr_req (tCONN_CB *p_ccb, UINT16 trans_num,
             return;
         }
         /* Get a scratch buffer to store response */
-        if (!p_ccb->rsp_list)
+        //if (!p_ccb->rsp_list)
+        if (!p_ccb->rsp_list || (GKI_get_buf_size(p_ccb->rsp_list) < max_list_len))
         {
+            /* Free and reallocate if the earlier allocated buffer is small */
+            if (p_ccb->rsp_list)
+            {
+                GKI_freebuf (p_ccb->rsp_list);
+            }
+
             p_ccb->rsp_list = (UINT8 *)GKI_getbuf (max_list_len);
             if (p_ccb->rsp_list == NULL)
             {

@@ -252,7 +252,8 @@ LogMsg(UINT32 trace_set_mask, const char *fmt_str, ...)
             break;
         case TRACE_TYPE_API:
         case TRACE_TYPE_EVENT:
-            LOGI0(bt_layer_tags[trace_layer], buffer);
+            //LOGI0(bt_layer_tags[trace_layer], buffer);
+            LOGD0(bt_layer_tags[trace_layer], buffer);
             break;
         case TRACE_TYPE_DEBUG:
             LOGD0(bt_layer_tags[trace_layer], buffer);

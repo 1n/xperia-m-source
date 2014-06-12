@@ -1,6 +1,7 @@
 /******************************************************************************
  *
  *  Copyright (C) 2004-2012 Broadcom Corporation
+ *  Copyright (C) 2013 Foxconn International Holdings, Ltd. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -664,9 +665,19 @@ void bta_av_rc_meta_rsp(tBTA_AV_CB *p_cb, tBTA_AV_DATA *p_data)
             (!p_data->api_meta_rsp.is_rsp && (p_cb->features & BTA_AV_FEAT_RCCT)) )
         {
             p_rcb = &p_cb->rcb[p_data->hdr.layer_specific];
-            AVRC_MsgReq(p_rcb->handle, p_data->api_meta_rsp.label, p_data->api_meta_rsp.rsp_code,
+            //AVRC_MsgReq(p_rcb->handle, p_data->api_meta_rsp.label, p_data->api_meta_rsp.rsp_code,
+            if (p_rcb->handle == BTA_AV_RC_HANDLE_NONE) 
+            { 
+                APPL_TRACE_ERROR1("bta_av_rc_meta_rsp invalid rc handle: %d : Ignore rsp", 
+                p_rcb->handle); 
+            } 
+            else 
+            { 
+                APPL_TRACE_WARNING1("bta_av_rc_meta_rsp rc handle: %d", p_rcb->handle); 
+                AVRC_MsgReq(p_rcb->handle, p_data->api_meta_rsp.label, p_data->api_meta_rsp.rsp_code, 
                                       p_data->api_meta_rsp.p_pkt);
-            free = FALSE;
+                free = FALSE;
+            } 
         }
     }
 
